@@ -1,15 +1,21 @@
 import React, {useEffect, useState} from 'react';
 import io from 'socket.io-client';
 import ChatPanelRoom from "./ChatPanelRoom";
+import {Session} from "../../../models/Session";
 
 const socket = io("ws://localhost:3000");
 
 function ChatPanel() {
-    const [rooms, setRooms] = useState([]);
+    const [rooms, setRooms] = useState<string[]>([]);
 
     useEffect(() => {
-        socket.on('list-rooms', (rooms) => {
-            setRooms(rooms);
+        socket.on('welcome-user', (session: Session) => {
+            setRooms(session.rooms);
+        });
+
+        socket.on('new-room', (room: string) => {
+            setRooms(rooms => [...rooms, room])
+            console.log(1)
         });
     }, []);
 
@@ -66,8 +72,9 @@ function ChatPanel() {
                 <div className="p-3 chat-header">
                     <div className="d-flex">
                         <div className="w-100 d-flex pl-0">
-                            <img className="user-detail-trigger rounded-circle shadow avatar-sm mr-3 chat-profile-picture"
-                                 src="https://user-images.githubusercontent.com/35243461/168796876-2e363a49-b32c-4218-b5a3-ce12493af69e.jpg"/>
+                            <img
+                                className="user-detail-trigger rounded-circle shadow avatar-sm mr-3 chat-profile-picture"
+                                src="https://user-images.githubusercontent.com/35243461/168796876-2e363a49-b32c-4218-b5a3-ce12493af69e.jpg"/>
                         </div>
 
                         <div className="flex-shrink-0 margin-auto">
@@ -118,9 +125,16 @@ function ChatPanel() {
                     </div>
                 </div>
 
-                {
-                    rooms.map((room, i) => <ChatPanelRoom key={i} room={room}/>)
-                }
+                <div className="chat-panel-room">
+                    <div className="pb-3 d-flex flex-column navigation-mobile pagination-scrool chat-user-scroll">
+                        {
+                            rooms.map((room, i) => (
+                                    <ChatPanelRoom key={i} room={room} active={room === socket.id}/>
+                                )
+                            )
+                        }
+                    </div>
+                </div>
             </div>
         </div>
     );

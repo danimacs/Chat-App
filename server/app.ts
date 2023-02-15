@@ -1,3 +1,5 @@
+import {Session} from "../models/Session";
+
 const express = require('express');
 const app = express();
 const http = require('http');
@@ -14,9 +16,15 @@ const io = new Server(httpServer, {
 io.on('connection', (socket) => {
     console.log('a user connected');
 
-    // Enviar las rooms disponibles
+    // Enviar session al nuevo cliente
+    let room = socket.id;
     let rooms = [...io.sockets.adapter.rooms.keys()];
-    io.emit('list-rooms', rooms);
+
+    let session = new Session(room, rooms);
+    io.to(socket.id).emit('welcome-user', session);
+
+    // Avisar de la nueva room a todos los clientes
+    socket.broadcast.emit('new-room', socket.id);
 
     /*
     socket.on('create-room', (room) => {
