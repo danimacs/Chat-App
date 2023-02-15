@@ -3,20 +3,27 @@ import io from 'socket.io-client';
 import ChatPanelRoom from "./ChatPanelRoom";
 import {Session} from "../../../models/Session";
 
-const socket = io("ws://localhost:3000");
+const ENDPOINT = "ws://localhost:3000";
 
 function ChatPanel() {
+    const [socket, setSocket] = useState<any>(null);
     const [rooms, setRooms] = useState<string[]>([]);
 
     useEffect(() => {
-        socket.on('welcome-user', (session: Session) => {
+        const newSocket = io(ENDPOINT);
+        setSocket(newSocket);
+
+        newSocket.on('welcome-user', (session: Session) => {
             setRooms(session.rooms);
         });
 
-        socket.on('new-room', (room: string) => {
-            setRooms(rooms => [...rooms, room])
-            console.log(1)
+        newSocket.on('new-room', (room: string) => {
+            setRooms(rooms => [...rooms, room]);
         });
+
+        return () => {
+            newSocket.disconnect();
+        }
     }, []);
 
     return (

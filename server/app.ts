@@ -18,7 +18,7 @@ io.on('connection', (socket) => {
 
     // Enviar session al nuevo cliente
     let room = socket.id;
-    let rooms = [...io.sockets.adapter.rooms.keys()];
+    let rooms = [...io.sockets.adapter.rooms.keys()].reverse();
 
     let session = new Session(room, rooms);
     io.to(socket.id).emit('welcome-user', session);
