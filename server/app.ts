@@ -26,6 +26,10 @@ io.on('connection', (socket) => {
     // Avisar de la nueva room a todos los clientes
     socket.broadcast.emit('new-room', socket.id);
 
+    socket.on('send-nickname', (nickname) => {
+        socket.nickname = nickname;
+    });
+
     /*
     socket.on('create-room', (room) => {
         console.log(`room ${room} was created`);

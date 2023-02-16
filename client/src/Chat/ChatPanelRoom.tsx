@@ -1,7 +1,6 @@
 function ChatPanelRoom(props: any) {
 
     return (
-
         <div className={"chat-item d-flex pl-3 pr-0 pt-3 pb-3 " + (props.active ? 'active' : '')}>
             <div className="w-100">
                 <div className="d-flex pl-0">

@@ -5,26 +5,13 @@ import {Session} from "../../../models/Session";
 
 const ENDPOINT = "ws://localhost:3000";
 
-function ChatPanel() {
+function ChatPanel(props: any) {
     const [socket, setSocket] = useState<any>(null);
     const [rooms, setRooms] = useState<string[]>([]);
 
     useEffect(() => {
-        const newSocket = io(ENDPOINT);
-        setSocket(newSocket);
-
-        newSocket.on('welcome-user', (session: Session) => {
-            setRooms(session.rooms);
-        });
-
-        newSocket.on('new-room', (room: string) => {
-            setRooms(rooms => [...rooms, room]);
-        });
-
-        return () => {
-            newSocket.disconnect();
-        }
-    }, []);
+        return connect(props, setSocket, setRooms);
+    }, [props]);
 
     return (
         <div className="col-md-4 col-12 card-stacked">
@@ -145,6 +132,27 @@ function ChatPanel() {
             </div>
         </div>
     );
+}
+
+function connect(props: any, setSocket: (value: any) => void, setRooms: (value: (((prevState: string[]) => string[]) | string[])) => void) {
+    if (props.nickname != "") {
+        const newSocket = io(ENDPOINT);
+        setSocket(newSocket);
+
+        newSocket.emit('send-nickname', props.nickname);
+
+        newSocket.on('welcome-user', (session: Session) => {
+            setRooms(session.rooms);
+        });
+
+        newSocket.on('new-room', (room: string) => {
+            setRooms(rooms => [...rooms, room]);
+        });
+
+        return () => {
+            newSocket.disconnect();
+        }
+    }
 }
 
 export default ChatPanel;
