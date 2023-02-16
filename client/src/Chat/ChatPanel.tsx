@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import io from 'socket.io-client';
 import ChatPanelRoom from "./ChatPanelRoom";
 import {Session} from "../../../models/Session";
+import ChatPanelCreateRoom from "./ChatPanelCreateRoom";
 
 const ENDPOINT = "ws://localhost:3000";
 
@@ -107,17 +108,7 @@ function ChatPanel(props: any) {
                     </div>
                 </div>
 
-                <div className="chat-search pl-3 pr-3">
-                    <div className="input-group">
-                        <input type="text" className="form-control"
-                               placeholder="Search a conversation"/>
-                        <div className="input-group-append prepend-white">
-                            <span className="input-group-text pl-2 pr-2">
-                                <i className="fs-17 las la-search drop-shadow"></i>
-                            </span>
-                        </div>
-                    </div>
-                </div>
+                <ChatPanelCreateRoom socket={socket}/>
 
                 <div className="chat-panel-room">
                     <div className="pb-3 d-flex flex-column navigation-mobile pagination-scrool chat-user-scroll">
