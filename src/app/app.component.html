@@ -1,9 +1,20 @@
 <mat-toolbar color="primary">
   Regístrate con Firebase
-  <button mat-raised-button routerLink="login">
-    <mat-icon>login</mat-icon>
-    Iniciar Sesión
-  </button>
+
+  <ng-container *ngIf="authService.currentUser | async as user; else loginButton">
+    <button mat-raised-button (click)="logout()">
+      <mat-icon>logout</mat-icon>
+      Cerrar sesión
+    </button>
+  </ng-container>
+
+  <ng-template #loginButton>
+    <button mat-raised-button routerLink="login">
+      <mat-icon>login</mat-icon>
+      Iniciar Sesión
+    </button>
+  </ng-template>
+
 </mat-toolbar>
 
 <div class="content">

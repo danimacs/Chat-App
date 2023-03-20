@@ -1,3 +1,4 @@
+import { HotToastModule } from '@ngneat/hot-toast';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -37,7 +38,8 @@ import { provideAuth,getAuth } from '@angular/fire/auth';
     ReactiveFormsModule,
     AppRoutingModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
-    provideAuth(() => getAuth())
+    provideAuth(() => getAuth()),
+    HotToastModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
