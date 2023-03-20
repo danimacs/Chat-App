@@ -2,3 +2,30 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.form-container {
+  display: block;
+  max-width: 300px;
+  margin: auto;
+
+  background-color: #eceff1;
+  padding: 3rem;
+  border-radius: 1rem;
+}
+
+.form-container mat-form-field {
+  width: 100%;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+}
+
+.margin-top {
+  margin-top: 1rem;
+}
+
+.text-center {
+  text-align: center;
+}

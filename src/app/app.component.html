@@ -1,9 +1,12 @@
 <mat-toolbar color="primary">
   Regístrate con Firebase
-  <button mat-raised-button>
+  <button mat-raised-button routerLink="login">
     <mat-icon>login</mat-icon>
     Iniciar Sesión
   </button>
 </mat-toolbar>
 
-<router-outlet></router-outlet>
+<div class="content">
+  <router-outlet></router-outlet>
+</div>
+
