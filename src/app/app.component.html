@@ -2,9 +2,10 @@
   Regístrate con Firebase
 
   <ng-container *ngIf="authService.currentUser | async as user; else loginButton">
-    <button mat-raised-button (click)="logout()">
-      <mat-icon>logout</mat-icon>
-      Cerrar sesión
+    <button mat-raised-button [matMenuTriggerFor]="userMenu">
+      <mat-icon>account_circle</mat-icon>
+      {{ user.displayName }}
+      <mat-icon>expand_more</mat-icon>
     </button>
   </ng-container>
 
@@ -21,3 +22,6 @@
   <router-outlet></router-outlet>
 </div>
 
+<mat-menu #userMenu="matMenu">
+  <button mat-menu-item (click)="logout()">Cerrar Sesión</button>
+</mat-menu>

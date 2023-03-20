@@ -18,6 +18,7 @@ import {AppRoutingModule} from "./app-routing.module";
 import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
 import { environment } from '../environments/environment';
 import { provideAuth,getAuth } from '@angular/fire/auth';
+import {MatMenuModule} from "@angular/material/menu";
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { provideAuth,getAuth } from '@angular/fire/auth';
     AppRoutingModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
-    HotToastModule.forRoot()
+    HotToastModule.forRoot(),
+    MatMenuModule
   ],
   providers: [],
   bootstrap: [AppComponent]

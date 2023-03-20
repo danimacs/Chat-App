@@ -1,20 +1,23 @@
 <div class="form-container mat-elevation-z5">
   <h1>Iniciar Sesión</h1>
   <form [formGroup]="loginForm" (ngSubmit)="submit()">
+
     <mat-form-field>
       <mat-label>Correo electrónico</mat-label>
       <input matInput formControlName="email">
       <mat-error *ngIf="getEmail()?.errors?.['required']">Porfavor, introduzca un correo electrónico</mat-error>
       <mat-error *ngIf="getEmail()?.errors?.['email']">Porfavor, introduzca un formato válido</mat-error>
     </mat-form-field>
+
     <mat-form-field>
       <mat-label>Contraseña</mat-label>
       <input matInput formControlName="password" type="password">
       <mat-error *ngIf="getPassword()?.errors?.['required']">Porfavor, introduzca una contraseña</mat-error>
     </mat-form-field>
+
     <div class="center margin-top">
       <button mat-raised-button color="primary" type="submit">Iniciar Sesión</button>
     </div>
-    <span class="center margin-top">¿No tienes cuenta?<a class="sign-up-link" routerLink="sign-up">Registrarse</a></span>
+    <span class="center margin-top">¿No tienes cuenta?<a class="sign-up-link" routerLink="/sign-up">Registrarse</a></span>
   </form>
 </div>
