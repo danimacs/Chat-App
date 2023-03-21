@@ -22,6 +22,10 @@ import {MatMenuModule} from "@angular/material/menu";
 import {getStorage, provideStorage} from "@angular/fire/storage";
 import { ProfileComponent } from './components/profile/profile.component';
 import {getFirestore, provideFirestore} from "@angular/fire/firestore";
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import {MatListModule} from "@angular/material/list";
+import {MatDividerModule} from "@angular/material/divider";
+import {MatLineModule} from "@angular/material/core";
 
 @NgModule({
   declarations: [
@@ -47,7 +51,11 @@ import {getFirestore, provideFirestore} from "@angular/fire/firestore";
     provideStorage(() => getStorage()),
     provideFirestore(() => getFirestore()),
     HotToastModule.forRoot(),
-    MatMenuModule
+    MatMenuModule,
+    MatAutocompleteModule,
+    MatListModule,
+    MatDividerModule,
+    MatLineModule
   ],
   providers: [],
   bootstrap: [AppComponent]
