@@ -3,6 +3,8 @@ import {AbstractControl, NonNullableFormBuilder, ValidationErrors, ValidatorFn, 
 import {AuthenticationService} from "../../services/authentication.service";
 import {HotToastService} from "@ngneat/hot-toast";
 import {Router} from "@angular/router";
+import {UsersService} from "../../services/users.service";
+import {switchMap} from "rxjs";
 
 export function passwordMatchValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
@@ -37,7 +39,8 @@ export class SignUpComponent implements OnInit {
     private fb: NonNullableFormBuilder,
     private authService: AuthenticationService,
     private toast: HotToastService,
-    private router: Router
+    private router: Router,
+    private usersService: UsersService
   ) {
   }
 
@@ -69,8 +72,11 @@ export class SignUpComponent implements OnInit {
     }
 
     this.authService
-      .signUp(name, email, password)
+      .signUp(email, password)
       .pipe(
+        switchMap(({ user: { uid } }) =>
+          this.usersService.addUser({ uid, email, displayName: name })
+        ),
         this.toast.observe({
           success: 'Has sido registrado correctamente',
           loading: 'Registrandote',

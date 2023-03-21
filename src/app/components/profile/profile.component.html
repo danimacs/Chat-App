@@ -1,0 +1,48 @@
+<div class="form-container mat-elevation-z5 text-center" *ngIf="user | async as user">
+  <h1>Perfil de usuario</h1>
+
+  <div class="profile-image">
+    <img width="120" height="120" [src]="user.photoURL ?? 'assets/images/image-placeholder.png'">
+    <button mat-mini-fab (click)="inputField.click()">
+      <mat-icon>edit</mat-icon>
+    </button>
+  </div>
+
+  <input #inputField type="file" hidden (change)="uploadFile($event, user)">
+
+  <form class="margin-top" [formGroup]="profileForm" (ngSubmit)="saveProfile()">
+
+    <div class="row">
+      <mat-form-field>
+        <mat-label>Nombre</mat-label>
+        <input type="text" matInput formControlName="firstName">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Apellido</mat-label>
+        <input type="text" matInput formControlName="lastName">
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field>
+        <mat-label>Nombre de usuario</mat-label>
+        <input type="text" matInput formControlName="displayName">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Número de teléfono</mat-label>
+        <input type="tel" matInput formControlName="phone">
+      </mat-form-field>
+    </div>
+
+    <mat-form-field>
+      <mat-label>Dirección</mat-label>
+      <input type="text" matInput formControlName="address">
+    </mat-form-field>
+
+    <button type="submit" class="margin-top" mat-raised-button color="primary">
+      Guardar
+    </button>
+  </form>
+</div>

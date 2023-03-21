@@ -19,6 +19,9 @@ import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
 import { environment } from '../environments/environment';
 import { provideAuth,getAuth } from '@angular/fire/auth';
 import {MatMenuModule} from "@angular/material/menu";
+import {getStorage, provideStorage} from "@angular/fire/storage";
+import { ProfileComponent } from './components/profile/profile.component';
+import {getFirestore, provideFirestore} from "@angular/fire/firestore";
 
 @NgModule({
   declarations: [
@@ -26,7 +29,8 @@ import {MatMenuModule} from "@angular/material/menu";
     LandingComponent,
     LoginComponent,
     SignUpComponent,
-    HomeComponent
+    HomeComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -40,6 +44,8 @@ import {MatMenuModule} from "@angular/material/menu";
     AppRoutingModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
+    provideStorage(() => getStorage()),
+    provideFirestore(() => getFirestore()),
     HotToastModule.forRoot(),
     MatMenuModule
   ],

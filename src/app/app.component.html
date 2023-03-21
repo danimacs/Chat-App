@@ -1,9 +1,9 @@
 <mat-toolbar color="primary">
   Regístrate con Firebase
 
-  <ng-container *ngIf="authService.currentUser | async as user; else loginButton">
-    <button mat-raised-button [matMenuTriggerFor]="userMenu">
-      <mat-icon>account_circle</mat-icon>
+  <ng-container *ngIf="user | async as user; else loginButton">
+    <button mat-button [matMenuTriggerFor]="userMenu">
+      <img class="profile-image-toolbar" width="30" height="30" [src]="user.photoURL ?? 'assets/images/image-placeholder.png'">
       {{ user.displayName }}
       <mat-icon>expand_more</mat-icon>
     </button>
@@ -23,5 +23,6 @@
 </div>
 
 <mat-menu #userMenu="matMenu">
+  <button mat-menu-item routerLink="/profile">Perfil</button>
   <button mat-menu-item (click)="logout()">Cerrar Sesión</button>
 </mat-menu>
