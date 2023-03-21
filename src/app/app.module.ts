@@ -26,6 +26,8 @@ import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {MatListModule} from "@angular/material/list";
 import {MatDividerModule} from "@angular/material/divider";
 import {MatLineModule} from "@angular/material/core";
+import { DateDisplayPipe } from './pipes/date-display.pipe';
+import {DatePipe} from "@angular/common";
 
 @NgModule({
   declarations: [
@@ -34,7 +36,8 @@ import {MatLineModule} from "@angular/material/core";
     LoginComponent,
     SignUpComponent,
     HomeComponent,
-    ProfileComponent
+    ProfileComponent,
+    DateDisplayPipe
   ],
   imports: [
     BrowserModule,
@@ -57,7 +60,7 @@ import {MatLineModule} from "@angular/material/core";
     MatDividerModule,
     MatLineModule
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

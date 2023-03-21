@@ -19,7 +19,7 @@
         <img matListItemAvatar [src]="chat.chatPic ? chat.chatPic : 'assets/images/image-placeholder.png'">
         <p mat-line class="chat-title">
           <span class="chat-name">{{ chat.chatName }}</span>
-          <span class="chat-date">{{ chat.lastMessageDate }}</span>
+          <span class="chat-date">{{ chat.lastMessageDate | dateDisplay }}</span>
         </p>
         <p mat-line>
           {{ chat.lastMessage }}
@@ -48,7 +48,7 @@
         <div *ngFor="let message of messages$ | async" class="chat-bubble-container" [ngClass]="{ 'sender' : message.senderId == currentUser.uid }">
           <div class="chat-bubble">
             {{ message.text }}
-            <span class="chat-date">14/04/2023</span>
+            <span class="chat-date">{{ message.sentDate | dateDisplay }}</span>
           </div>
         </div>
       </ng-container>
