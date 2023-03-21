@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {UsersService} from "../../services/users.service";
 import {FormControl} from "@angular/forms";
-import {combineLatest, map, startWith, switchMap} from "rxjs";
+import {combineLatest, map, of, startWith, switchMap, tap} from "rxjs";
 import {ProfileUser} from "../../models/profile-user";
 import {ChatsService} from "../../services/chats.service";
 
@@ -11,6 +11,8 @@ import {ChatsService} from "../../services/chats.service";
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+
+  @ViewChild('endOfChat') endOfChat!: ElementRef;
 
   user$ = this.usersService.getCurrentUserProfile();
   myChats$ = this.chatsService.getMyChats$();
@@ -42,7 +44,10 @@ export class HomeComponent implements OnInit {
 
   messages$ = this.chatListControl.valueChanges.pipe(
     map(value => value![0]),
-    switchMap(chatId => this.chatsService.getChatMessages$(chatId))
+    switchMap(chatId => this.chatsService.getChatMessages$(chatId)),
+    tap(() => {
+      this.scrollToBottom();
+    })
   );
 
   constructor(
@@ -55,8 +60,17 @@ export class HomeComponent implements OnInit {
   }
 
   createChat(otherUser: ProfileUser) {
-    this.chatsService.createChat(otherUser)
-      .subscribe();
+    this.chatsService.isExistingChat(otherUser?.uid).pipe(
+      switchMap(chatId => {
+        if (!chatId) {
+          return this.chatsService.createChat(otherUser);
+        } else {
+          return of(chatId);
+        }
+      })
+    ).subscribe(chatId => {
+      this.chatListControl.setValue(chatId);
+    });
   }
 
   sendMessage() {
@@ -64,9 +78,18 @@ export class HomeComponent implements OnInit {
     const selectedChatId = this.chatListControl.value![0];
 
     if(message && selectedChatId) {
-      this.chatsService.addChatMessage(selectedChatId, message).subscribe();
+      this.chatsService.addChatMessage(selectedChatId, message).subscribe(() => {
+        this.scrollToBottom();
+      });
       this.messageControl.setValue('');
     }
+  }
 
+  scrollToBottom() {
+    setTimeout(() => {
+      if (this.endOfChat) {
+        this.endOfChat.nativeElement.scrollIntoView({ behavior: "smooth" });
+      }
+    }, 100);
   }
 }

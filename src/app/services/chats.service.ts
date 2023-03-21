@@ -47,6 +47,21 @@ export class ChatsService {
     )
   }
 
+  isExistingChat(otherUserId: string): Observable<string | null> {
+    return this.getMyChats$().pipe(
+      take(1),
+      map((chats) => {
+        for (let i = 0; i < chats.length; i++) {
+          if (chats[i].userIds.includes(otherUserId)) {
+            return chats[i].id;
+          }
+        }
+
+        return null;
+      })
+    );
+  }
+
   getMyChats$(): Observable<Chat[]> {
     const ref = collection(this.firestore, 'chats');
     return this.usersService.getCurrentUserProfile().pipe(
