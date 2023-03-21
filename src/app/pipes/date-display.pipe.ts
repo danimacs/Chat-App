@@ -10,7 +10,7 @@ export class DateDisplayPipe implements PipeTransform {
   constructor(private datePipe: DatePipe) {
   }
   transform(date: Timestamp | undefined): string {
-    return this.datePipe.transform(date?.toMillis(), 'short') ?? '';
+    return this.datePipe.transform(date?.toMillis(), 'd/M/yy, HH:mm') ?? '';
   }
 
 }
