@@ -1,5 +1,5 @@
 <mat-toolbar color="primary">
-  Regístrate con Firebase
+  App Chat
 
   <ng-container *ngIf="user | async as user; else loginButton">
     <button mat-button [matMenuTriggerFor]="userMenu">
@@ -23,6 +23,7 @@
 </div>
 
 <mat-menu #userMenu="matMenu">
+  <button mat-menu-item routerLink="/home">Chats</button>
   <button mat-menu-item routerLink="/profile">Perfil</button>
   <button mat-menu-item (click)="logout()">Cerrar Sesión</button>
 </mat-menu>
