@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormControl} from "@angular/forms";
-import {combineLatest, map, of, startWith, switchMap} from "rxjs";
+import {combineLatest, map, startWith} from "rxjs";
 import {UsersService} from "../../../services/users.service";
 import {ChatsService} from "../../../services/chats.service";
 import {ProfileUser} from "../../../models/profile-user";
@@ -42,9 +42,7 @@ export class SidebarComponent implements OnInit {
       map(([allUsers, user]) => allUsers.filter((allUser) => allUser.uid !== user?.uid))
     );
 
-    this.users$ = combineLatest([
-      otherUsers,
-      this.searchControl.valueChanges.pipe(startWith('')),
+    this.users$ = combineLatest([otherUsers, this.searchControl.valueChanges.pipe(startWith('')),
     ]).pipe(
       map(([users, searchString]) => {
         return users.filter((u) => {

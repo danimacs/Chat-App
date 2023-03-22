@@ -57,9 +57,7 @@ export class MessagesComponent implements OnChanges {
 
   private getSelectedChat() {
     if (this.chatListControl) {
-      this.selectedChat$ = combineLatest([
-        this.chatListControl.valueChanges,
-        this.chatsService.getChats$(),
+      this.selectedChat$ = combineLatest([this.chatListControl.valueChanges, this.chatsService.getChats$(),
       ]).pipe(map(([value, chats]) => chats.find((chat) => chat.id === value![0])));
     }
   }
