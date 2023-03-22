@@ -1,33 +1,35 @@
-import { HotToastModule } from '@ngneat/hot-toast';
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import {HotToastModule} from '@ngneat/hot-toast';
+import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
 
-import { AppComponent } from './app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {AppComponent} from './app.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {ReactiveFormsModule} from "@angular/forms";
-import { LandingComponent } from './components/landing/landing.component';
-import { LoginComponent } from './components/login/login.component';
-import { SignUpComponent } from './components/sign-up/sign-up.component';
-import { HomeComponent } from './components/home/home.component';
+import {LandingComponent} from './components/landing/landing.component';
+import {LoginComponent} from './components/login/login.component';
+import {SignUpComponent} from './components/sign-up/sign-up.component';
+import {HomeComponent} from './components/home/home.component';
 import {AppRoutingModule} from "./app-routing.module";
-import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
-import { environment } from '../environments/environment';
-import { provideAuth,getAuth } from '@angular/fire/auth';
+import {initializeApp, provideFirebaseApp} from '@angular/fire/app';
+import {environment} from '../environments/environment';
+import {getAuth, provideAuth} from '@angular/fire/auth';
 import {MatMenuModule} from "@angular/material/menu";
 import {getStorage, provideStorage} from "@angular/fire/storage";
-import { ProfileComponent } from './components/profile/profile.component';
+import {ProfileComponent} from './components/profile/profile.component';
 import {getFirestore, provideFirestore} from "@angular/fire/firestore";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {MatListModule} from "@angular/material/list";
 import {MatDividerModule} from "@angular/material/divider";
 import {MatLineModule} from "@angular/material/core";
-import { DateDisplayPipe } from './pipes/date-display.pipe';
+import {DateDisplayPipe} from './pipes/date-display.pipe';
 import {DatePipe} from "@angular/common";
+import {MessagesComponent} from './components/home/messages/messages.component';
+import {SidebarComponent} from './components/home/sidebar/sidebar.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +39,9 @@ import {DatePipe} from "@angular/common";
     SignUpComponent,
     HomeComponent,
     ProfileComponent,
-    DateDisplayPipe
+    DateDisplayPipe,
+    MessagesComponent,
+    SidebarComponent
   ],
   imports: [
     BrowserModule,
@@ -63,4 +67,5 @@ import {DatePipe} from "@angular/common";
   providers: [DatePipe],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

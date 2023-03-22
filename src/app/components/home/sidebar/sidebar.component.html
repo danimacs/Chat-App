@@ -1,0 +1,30 @@
+<div class="search-input">
+  <mat-form-field>
+    <mat-label>Buscar usuarios</mat-label>
+    <input matInput [formControl]="searchControl" [matAutocomplete]="users">
+  </mat-form-field>
+
+  <mat-autocomplete #users="matAutocomplete">
+    <mat-option *ngFor="let user of users$ | async" [value]="''" (click)="selectChat(user)">
+      {{ user?.displayName }}
+    </mat-option>
+  </mat-autocomplete>
+</div>
+
+<mat-selection-list [multiple]="false" [formControl]="$any(chatListControl)">
+  <mat-divider></mat-divider>
+
+  <mat-list-option *ngFor="let chat of myChats$ | async" [value]="chat.id">
+    <img matListItemAvatar [src]="chat.chatPic ? chat.chatPic : 'assets/images/image-placeholder.png'">
+
+    <p mat-line class="chat-title">
+      <span class="chat-name">{{ chat.chatName }}</span>
+      <span class="chat-date">{{ chat.lastMessageDate | dateDisplay }}</span>
+    </p>
+
+    <p mat-line>
+      {{ chat.lastMessage }}
+    </p>
+    <mat-divider inset></mat-divider>
+  </mat-list-option>
+</mat-selection-list>

@@ -1,19 +1,9 @@
-import { Injectable } from '@angular/core';
-import {
-  addDoc,
-  collection,
-  collectionData,
-  doc,
-  Firestore, orderBy,
-  query,
-  Timestamp,
-  updateDoc,
-  where
-} from "@angular/fire/firestore";
-import {ProfileUser} from "../models/profile-user";
-import {concatMap, map, Observable, take} from "rxjs";
+import {Injectable} from '@angular/core';
+import {addDoc, collection, collectionData, doc, Firestore, orderBy, query, Timestamp, updateDoc, where} from "@angular/fire/firestore";
+import {concatMap, map, Observable, take, tap} from "rxjs";
 import {UsersService} from "./users.service";
 import {Chat, Message} from "../models/chat";
+import {ProfileUser} from "../models/profile-user";
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +13,8 @@ export class ChatsService {
   constructor(
     private firestore: Firestore,
     private usersService: UsersService
-  ) { }
+  ) {
+  }
 
   createChat(otherUser: ProfileUser): Observable<string> {
     const ref = collection(this.firestore, 'chats');
@@ -47,27 +38,22 @@ export class ChatsService {
     )
   }
 
-  isExistingChat(otherUserId: string): Observable<string | null> {
-    return this.getMyChats$().pipe(
+  getChat(otherUser: ProfileUser): Observable<string | null> {
+    return this.getChats$().pipe(
       take(1),
-      map((chats) => {
-        for (let i = 0; i < chats.length; i++) {
-          if (chats[i].userIds.includes(otherUserId)) {
-            return chats[i].id;
-          }
-        }
-
-        return null;
+      map((chats: Chat[]) => {
+        let chat: Chat | undefined = chats.find((chat) => chat.userIds.includes(otherUser?.uid));
+        return chat != null ? chat.id : null;
       })
-    );
+    ).pipe(tap(chatId => !chatId ? this.createChat(otherUser) : chatId));
   }
 
-  getMyChats$(): Observable<Chat[]> {
+  getChats$(): Observable<Chat[]> {
     const ref = collection(this.firestore, 'chats');
     return this.usersService.getCurrentUserProfile().pipe(
       concatMap((user) => {
         const myQuery = query(ref, where('userIds', 'array-contains', user?.uid));
-        return collectionData(myQuery, { idField: 'id' }).pipe(
+        return collectionData(myQuery, {idField: 'id'}).pipe(
           map(chats => this.addChatNameAndPic(user?.uid ?? '', chats as Chat[]))
         ) as Observable<Chat[]>
       })
@@ -77,7 +63,7 @@ export class ChatsService {
   addChatNameAndPic(currentUserId: string, chats: Chat[]): Chat[] {
     chats.forEach((chat: Chat) => {
       const otherIndex = chat.userIds.indexOf(currentUserId) === 0 ? 1 : 0;
-      const { displayName, photoURL } = chat.users[otherIndex];
+      const {displayName, photoURL} = chat.users[otherIndex];
       chat.chatName = displayName;
       chat.chatPic = photoURL;
     })
@@ -97,7 +83,7 @@ export class ChatsService {
         senderId: user?.uid,
         sentDate: today
       })),
-      concatMap(() => updateDoc(chatRef, { lastMessage: message, lastMessageDate: today }))
+      concatMap(() => updateDoc(chatRef, {lastMessage: message, lastMessageDate: today}))
     );
   }
 

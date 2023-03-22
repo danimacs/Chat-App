@@ -1,0 +1,36 @@
+<div class="messages-header" *ngIf="selectedChat$ | async; else noMessages">
+  <img [src]="selectedChat$.chatPic ? selectedChat$.chatPic : 'assets/images/image-placeholder.png'">
+  <h2>{{ selectedChat$.chatName }}</h2>
+</div>
+
+<ng-template #noMessages>
+  <div class="messages-header">
+    <h2>Messages</h2>
+  </div>
+</ng-template>
+
+<mat-divider></mat-divider>
+
+<div class="chat-area">
+  <ng-container *ngIf="user$ | async as currentUser">
+    <div *ngFor="let message of messages$ | async" class="chat-bubble-container" [ngClass]="{ 'sender' : message.senderId == currentUser.uid }">
+      <div class="chat-bubble">
+        {{ message.text }}
+        <span class="chat-date">{{ message.sentDate | dateDisplay }}</span>
+      </div>
+    </div>
+
+    <div #endOfChat></div>
+  </ng-container>
+</div>
+
+<div class="input-area">
+  <mat-form-field appearance="outline">
+    <mat-label>Escribe tu mensaje</mat-label>
+    <input matInput [formControl]="messageControl" (keydown.enter)="sendMessage()">
+
+    <button mat-icon-button matSuffix (click)="sendMessage()">
+      <mat-icon>send</mat-icon>
+    </button>
+  </mat-form-field>
+</div>
